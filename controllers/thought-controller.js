@@ -25,6 +25,15 @@ const thoughtController = {
 
   // TODO 
   // DELETE: REMOVE THOUGHT BY ID ➝ /api/thoughts/:id
+
+
+
+  // TODO 
+  // POST: CREATE A REACTION ➝ /api/thoughts/:thoughtId/reactions
+
+
+  // TODO 
+  // DELETE: REMOVE A REACTION ➝ /api/thoughts/:thoughtId/reactions/:reactionId
 };
 
 
