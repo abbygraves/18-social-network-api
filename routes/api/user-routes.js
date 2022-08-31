@@ -1,4 +1,4 @@
-// WORK IN PROGRESS: Need to include friend routes
+// FILE COMPLETE
 const router = require('express').Router();
 const {
   getAllUsers,
