@@ -1,5 +1,5 @@
 // FILE COMPLETE
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 const userController = {
   // GET ALL USERS ➝ /api/users

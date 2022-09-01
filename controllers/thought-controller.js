@@ -19,10 +19,10 @@ const thoughtController = {
   // GET SINGLE THOUGHT BY ID ➝ /api/thoughts/:id
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.id })
-      .populate({
-        path: "reactions",
-        select: "-__v",
-      })
+      // .populate({
+      //   path: "reactions",
+      //   select: "-__v",
+      // })
       .select("-__v")
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
@@ -37,43 +37,16 @@ const thoughtController = {
       });
   },
 
-  // TODO: don't forget to push the created thought's _id to the associated user's thoughts array field
+  // DONE 
   // POST: CREATE NEW THOUGHT ➝ /api/thoughts
-  // NOT IN USE 
-  // createThought({ body }, res) {
-  //   Thought.create(body)
-  //     .then((dbThoughtData) => res.json(dbThoughtData))
-  //     .catch((err) => res.status(400).json(err));
-  // },
-
-  // NOT IN USE 
-  // createThought({ params }, res) {
-  //   Thought.create(
-  //     { _id: params.thoughtId },
-  //     { $push: { thoughts: params.thoughtId } },
-  //     { new: true, runValidators: true }
-  //   )
-  //     .populate({
-  //       path: "username",
-  //       select: "-__v",
-  //     })
-  //     .populate({
-  //       path: "thoughtText",
-  //       select: "-__v",
-  //     })
-  //     .then((dbThoughtData) => res.json(dbThoughtData))
-  //     .catch((err) => res.status(400).json(err));
-  // },
-
-  // FIXME: Can't get thought to push to user's thoughts array field
   createThought({ params, body }, res) {
     // console.log(body);
     Thought.create(body)
-      .then(({ params }) => {
+      .then((dbThoughtData) => {
         return User.findOneAndUpdate(
-          { _id: params.userId },
-          { $push: { thoughts: params.thoughtId } },
-          { new: true }
+          { _id: body.userId },
+          { $push: { thoughts: dbThoughtData._id } },
+          { new: true, runValidators: true }
         );
       })
       .then((dbUserData) => {
@@ -90,6 +63,7 @@ const thoughtController = {
   // PUT: UPDATE THOUGHT BY ID ➝ /api/thoughts/:id
   // updateThought()
 
+  
   // REVIEW: Make sure deleted thought gets removed from user as well
   // DELETE: REMOVE THOUGHT BY ID ➝ /api/thoughts/:id
   deleteThought({ params }, res) {
