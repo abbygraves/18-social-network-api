@@ -1,5 +1,8 @@
 // FILE COMPLETE
 const { User, Thought } = require("../models");
+const { findByIdAndRemove } = require("../models/Thought");
+const thoughtController = require("./thought-controller");
+const { getThoughtById, deleteThought } = require("./thought-controller");
 
 const userController = {
   // GET ALL USERS ➝ /api/users
@@ -65,8 +68,8 @@ const userController = {
 
   // DELETE: REMOVE USER BY ID ➝ /api/users/:id
   deleteUser({ params }, res) {
+    // User.findById({ _id: params.id }),
     User.findOneAndDelete({ _id: params.id })
-      .select("-__v")
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: "No user found with this id!" });

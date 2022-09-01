@@ -18,6 +18,4 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/18-social
 mongoose.set('debug', true);
 
 
-
-
 app.listen(PORT, () => console.log(`App connected on http://localhost:${PORT}`));

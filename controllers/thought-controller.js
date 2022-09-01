@@ -1,8 +1,7 @@
-// WORK IN PROGRESS
+// FILE COMPLETE 
 const { Thought, User } = require("../models");
 
 const thoughtController = {
-  // DONE 
   // GET ALL THOUGHTS ➝ /api/thoughts
   getAllThoughts(req, res) {
     Thought.find({})
@@ -15,7 +14,6 @@ const thoughtController = {
       });
   },
 
-  // DONE 
   // GET SINGLE THOUGHT BY ID ➝ /api/thoughts/:id
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.id })
@@ -37,7 +35,6 @@ const thoughtController = {
       });
   },
 
-  // DONE 
   // POST: CREATE NEW THOUGHT ➝ /api/thoughts
   createThought({ params, body }, res) {
     // console.log(body);
@@ -58,33 +55,66 @@ const thoughtController = {
       })
       .catch((err) => res.json(err));
   },
-
-  // TODO
+ 
   // PUT: UPDATE THOUGHT BY ID ➝ /api/thoughts/:id
-  // updateThought()
-
-  
-  // REVIEW: Make sure deleted thought gets removed from user as well
+  updateThought({ params, body }, res) {
+    Thought.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
+    })
+      .select("-__v")
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          res.status(404).json({ message: "No thought found with this id!" });
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => res.status(400).json(err));
+  },
+ 
   // DELETE: REMOVE THOUGHT BY ID ➝ /api/thoughts/:id
   deleteThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.id })
       .select("-__v")
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
-          return res.status(404).json({ message: "No thought found with this id!" });
+          return res
+            .status(404)
+            .json({ message: "No thought found with this id!" });
         }
         res.json(dbThoughtData);
       })
       .catch((err) => res.status(400).json(err));
   },
-
-  // TODO
-  // POST: CREATE A REACTION ➝ /api/thoughts/:thoughtId/reactions
-  // addReaction()
-
-  // TODO
-  // DELETE: REMOVE A REACTION ➝ /api/thoughts/:thoughtId/reactions/:reactionId
-  // removeReaction()
+ 
+  // POST: CREATE/ADD A REACTION TO A THOUGHT ➝ /api/thoughts/:thoughtId/reactions
+  addReaction({ params, body }, res) {
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true, runValidators: true }
+    )
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          res.status(404).json({ message: "No thought found with this id!" });
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => res.json(err));
+  },
+ 
+  // DELETE: DELETE/REMOVE A REACTION FROM A THOUGHT ➝ /api/thoughts/:thoughtId/reactions/:reactionId
+  removeReaction({ params }, res) {
+    Thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
+      .then((dbThoughtData) => res.json(dbThoughtData))
+      .catch((err) => res.json(err));
+  },
 };
 
 module.exports = thoughtController;
