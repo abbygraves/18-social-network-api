@@ -68,7 +68,7 @@ const userController = {
 
   // DELETE: REMOVE USER BY ID ➝ /api/users/:id
   deleteUser({ params }, res) {
-    // User.findById({ _id: params.id }),
+    User.findById({ _id: params.id }),
     User.findOneAndDelete({ _id: params.id })
       .then((dbUserData) => {
         if (!dbUserData) {
@@ -79,6 +79,8 @@ const userController = {
       })
       .catch((err) => res.status(400).json(err));
   },
+
+    
 
   // ADD FRIEND TO USER'S FRIEND LIST ➝ /api/users/:userId/friends/:friendId
   addFriend({ params }, res) {

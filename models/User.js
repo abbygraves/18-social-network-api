@@ -46,6 +46,15 @@ UserSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
 
+// BONUS: ⚠️  
+ 
+// Remove thoughts related to a user
+UserSchema.pre('remove', function(next) {
+  this.model('Thought').remove({ user: this._id }, next);
+});
+
+
+
 
 const User = model("User", UserSchema);
 

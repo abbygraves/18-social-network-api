@@ -5,9 +5,9 @@
 ## **Description**
 The back end code for a social networking web application using a NoSQL database. API routes, tested in Insomnia, allow users to view, add, update, and delete data in the database.
 
-### [Click to View Demo]()
+### [Click to View Demo](https://youtu.be/qmvYXe5FzVM)
 
-<img src=""/>
+<img src="./assets/social-network-api-img.png"/>
 
 <br/>
 
