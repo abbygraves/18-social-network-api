@@ -67,17 +67,37 @@ const userController = {
   },
 
   // DELETE: REMOVE USER BY ID ➝ /api/users/:id
-  deleteUser({ params }, res) {
-    User.findById({ _id: params.id }),
-    User.findOneAndDelete({ _id: params.id })
-      .then((dbUserData) => {
-        if (!dbUserData) {
-          res.status(404).json({ message: "No user found with this id!" });
-          return;
-        }
-        res.json(dbUserData);
-      })
-      .catch((err) => res.status(400).json(err));
+  // deleteUser({ params }, res) {
+  //   User.findById({ _id: params.id })
+  //   User.findOneAndDelete({ _id: params.id })
+  //     .then((dbUserData) => {
+  //       if (!dbUserData) {
+  //         res.status(404).json({ message: "No user found with this id!" });
+  //         return;
+  //       }
+  //       res.json(dbUserData);
+  //     })
+  //     .catch((err) => res.status(400).json(err));
+
+
+  // DELETE USER AND ASSOCIATED THOUGHTS 
+    deleteUser({ params }, res) {
+      User.findOneAndDelete({ _id: params.id })
+        .then(dbUserData => {
+          if (!dbUserData) {
+            res.status(404).json({ message: 'No user found with this ID.' });
+          }
+          return Thought.deleteMany(
+            { username: dbUserData.username }
+          );
+        })
+        .then(deletedThoughts => {
+          if (!deletedThoughts) {
+            res.status(404).json({ message: 'User deleted, no thoughts to delete.'});
+          }
+          res.json(deletedThoughts);
+        })
+        .catch(err => res.status(400).json(err));
   },
 
     
