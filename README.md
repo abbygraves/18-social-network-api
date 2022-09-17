@@ -42,7 +42,7 @@ This repository contains code used in the back end. API routes and functionality
 <br/>
 
 ## **Got Questions?**
-Feel free to reach out with questions or comments regarding `<insert project title>` !
+Feel free to reach out with questions or comments regarding Social Network API!
 
 [My GitHub Profile](https://github.com/abbygraves)&nbsp; :octocat: &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp; abbygraves14@gmail.com&nbsp; :incoming_envelope:
 
